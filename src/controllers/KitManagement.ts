@@ -1,8 +1,14 @@
 import Medicine from "../models/Medicine.js";
 import * as readline from "readline";
+const med = new Medicine(
+	"paracetamol",
+	10,
+	new Date("2025-04-10"),
+	"random stuff"
+);
 
 export default class KitManagement {
-	protected medicines: Medicine[] = [];
+	protected medicines: Medicine[] = [med];
 	private rl = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout,
