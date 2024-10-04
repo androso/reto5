@@ -11,12 +11,16 @@ export default class KitManagement {
 	protected medicines: Medicine[] = [testMed];
 
 	showMedicineAvailable() {
-		console.log("Available medicine");
-		this.medicines.forEach((medicine, index) => {
-			console.log("==============");
-			console.log(this.getMedicineFormatted(medicine));
-			console.log("==============");
-		});
+		if (this.medicines.length >= 1) {
+			console.log("Available medicine");
+			this.medicines.forEach((medicine, index) => {
+				console.log("==============");
+				console.log(this.getMedicineFormatted(medicine));
+				console.log("==============");
+			});
+		} else {
+			console.log("No medicines available");
+		}
 	}
 
 	getMedicineFormatted(medicine: Medicine) {
@@ -37,6 +41,11 @@ export default class KitManagement {
             7. Salir
             ============================ 
         `);
+	}
+
+	deleteMedicine(medName: string) {
+		this.medicines = this.medicines.filter((med) => med.name !== medName);
+		console.log(`${medName} was deleted if found`);
 	}
 
 	getMedicineInfo(name: string) {

@@ -5,3 +5,5 @@ const manager = new KitManagement();
 // manager.showMenu();
 // manager.showMedicineAvailable();
 // manager.getMedicineInfo("paracet2")
+// manager.deleteMedicine("paracet");
+// manager.showMedicineAvailable();
