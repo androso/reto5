@@ -1,14 +1,12 @@
 import Medicine from "../models/Medicine.js";
-
-const testMed = new Medicine(
-	"paracet",
-	2,
-	new Date("2025-04-10"),
-	"classical medicine"
-);
+import * as readline from "readline";
 
 export default class KitManagement {
-	protected medicines: Medicine[] = [testMed];
+	protected medicines: Medicine[] = [];
+	private rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout,
+	});
 
 	showMedicineAvailable() {
 		if (this.medicines.length >= 1) {
@@ -33,14 +31,74 @@ export default class KitManagement {
 		console.log("===========================");
 		console.log(`
             1. Agregar el medicamento
-            2. Mostrar el medicamento
+            2. Mostrar lista de medicamentos
             3. Buscar el medicamento
             4. Actualizar medicamento
             5. Eliminar medicamento
             6. Crear la requisicion
             7. Salir
             ============================ 
-        `);
+            `);
+
+		this.rl.question("Please choose one of the options above: ", (option) => {
+			const optionParsed = parseInt(option);
+			switch (optionParsed) {
+				case 1:
+					this.addMedicine();
+					break;
+				case 2:
+					this.showMedicineAvailable();
+					break;
+				case 3:
+					// this.getMedicineInfo();
+					break;
+				case 4:
+					// this.modifyMedicine();
+					break;
+				case 5:
+					// this.deleteMedicine();
+					break;
+				case 6:
+				// this.withdrawMedicine();
+				default:
+					console.log("Please introduce a valid option");
+					this.rl.close();
+					return;
+			}
+		});
+	}
+
+	addMedicine() {
+		this.rl.question("Please introduce the medicine's name: ", (medName) => {
+			this.rl.question(
+				"Please introduce the initial stock: ",
+				(initialStock) => {
+					this.rl.question(
+						"Please introduce the expiration date: ",
+						(expDate) => {
+							this.rl.question(
+								"Please introduce the description: ",
+								(description) => {
+									if (this.medicineExists(medName)) {
+										console.log("Medicine is duplicated!");
+										this.rl.close();
+									}
+									const med = new Medicine(
+										medName,
+										parseInt(initialStock),
+										new Date(expDate),
+										description
+									);
+									console.log(JSON.stringify(med));
+									this.medicines.push(med);
+									this.showMenu();
+								}
+							);
+						}
+					);
+				}
+			);
+		});
 	}
 
 	modifyMedicine(
@@ -97,7 +155,7 @@ export default class KitManagement {
 				console.log("Not enough stock");
 			} else {
 				med.stock -= withdraw_amount;
-                console.log("withdrawal successfull")
+				console.log("withdrawal successfull");
 			}
 		} else {
 			console.log("medicine not found :(");
