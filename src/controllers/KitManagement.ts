@@ -2,7 +2,7 @@ import Medicine from "../models/Medicine.js";
 
 const testMed = new Medicine(
 	"paracet",
-	1,
+	2,
 	new Date("2025-04-10"),
 	"classical medicine"
 );
@@ -49,7 +49,7 @@ export default class KitManagement {
 		newExpireDate?: Date,
 		newDescription?: string
 	) {
-		if (this.medicines.find((med) => med.name == name)) {
+		if (this.medicineExists(name)) {
 			this.medicines = this.medicines.map((med) => {
 				if (med.name === name) {
 					return new Medicine(
@@ -80,6 +80,27 @@ export default class KitManagement {
 			console.log("==============");
 			console.log(this.getMedicineFormatted(med));
 			console.log("==============");
+		}
+	}
+
+	medicineExists(name: string) {
+		return !!this.medicines.find((med) => med.name === name);
+	}
+
+	withdrawMedicine(medName: string, withdraw_amount: number) {
+		if (this.medicineExists(medName)) {
+			const med = this.medicines.find((med) => med.name == medName) as Medicine;
+
+			if (med.stock === 0) {
+				console.log("medicine out of stock");
+			} else if (withdraw_amount > med.stock) {
+				console.log("Not enough stock");
+			} else {
+				med.stock -= withdraw_amount;
+                console.log("withdrawal successfull")
+			}
+		} else {
+			console.log("medicine not found :(");
 		}
 	}
 }
