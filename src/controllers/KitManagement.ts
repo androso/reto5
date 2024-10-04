@@ -43,6 +43,30 @@ export default class KitManagement {
         `);
 	}
 
+	modifyMedicine(
+		name: string,
+		newStock?: number,
+		newExpireDate?: Date,
+		newDescription?: string
+	) {
+		if (this.medicines.find((med) => med.name == name)) {
+			this.medicines = this.medicines.map((med) => {
+				if (med.name === name) {
+					return new Medicine(
+						name,
+						newStock ? newStock : med.stock,
+						newExpireDate ? newExpireDate : med.expireDate,
+						newDescription ? newDescription : med.description
+					);
+				}
+				return med;
+			});
+			console.log("medicine modified!");
+		} else {
+			console.log("medicine not found");
+		}
+	}
+
 	deleteMedicine(medName: string) {
 		this.medicines = this.medicines.filter((med) => med.name !== medName);
 		console.log(`${medName} was deleted if found`);
